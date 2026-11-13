@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智能手表用户偏好｜交互式柱形图</title>
+<style>
+:root{--ink:#10213b;--muted:#64748b;--blue:#2563eb;--border:#e5ebf4;--surface:#fff;--bg:#f3f6fd}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 18px;background:linear-gradient(140deg,#e9f0ff 0%,#f5f7fc 38%,#f0f4fa 100%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink)}
+.shell{max-width:970px;margin:0 auto}.topline{display:flex;gap:12px;align-items:center;margin:0 0 18px}.mark{display:inline-flex;align-items:center;justify-content:center;width:39px;height:39px;border-radius:13px;background:#1e40af;color:white;font-size:22px}.eyebrow{font-size:12px;letter-spacing:.09em;color:#5070a7;font-weight:700}.topline strong{display:block;font-size:16px;margin-top:2px}.panel{background:var(--surface);border:1px solid #e7edfa;box-shadow:0 12px 36px rgba(30,58,138,.09);border-radius:22px;padding:28px 32px 25px}.heading{display:flex;justify-content:space-between;gap:20px;align-items:start;flex-wrap:wrap}.heading h1{font-size:26px;letter-spacing:-.02em;margin:0 0 8px;line-height:1.4}.subtitle{margin:0;color:var(--muted);font-size:14px;line-height:1.8}.chip{background:#edf5ff;border:1px solid #d7e9ff;color:#2755a0;border-radius:99px;font-size:13px;padding:9px 13px;font-weight:700;white-space:nowrap}.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 20px}.kpi{background:#f7faff;border:1px solid #e5eefc;padding:15px 17px;border-radius:14px}.kpi .key{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.kpi .value{font-size:24px;letter-spacing:-.03em;font-weight:800}.kpi small{font-size:12px;font-weight:500;color:var(--muted);margin-left:5px}.toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-top:1px solid var(--border);padding-top:18px}.section-label{font-weight:700;font-size:15px}.seg{display:flex;gap:4px;padding:4px;border-radius:11px;background:#f0f4fb}.seg button{border:0;background:transparent;border-radius:8px;color:#64748b;padding:8px 15px;font-size:13px;cursor:pointer;font-weight:650}.seg button[aria-pressed=true]{background:white;color:#1e40af;box-shadow:0 1px 5px #c9d5e8}.chart-area{height:360px;width:100%;position:relative;padding-top:10px}#prefChart{width:100%;height:100%;display:block}.tip{position:absolute;z-index:3;background:#172b4d;color:#fff;border-radius:11px;padding:9px 12px;font-size:13px;box-shadow:0 8px 22px rgba(23,43,77,.24);pointer-events:none;display:none;white-space:nowrap;line-height:1.55}.insight{display:flex;align-items:flex-start;gap:12px;margin-top:16px;background:#f0f6ff;border-left:4px solid #3674e9;padding:14px 16px;border-radius:10px}.insight .ico{font-size:19px}.insight p{margin:0;color:#365278;font-size:13.5px;line-height:1.78}.footer{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:16px;color:#7b8a9c;font-size:12px;flex-wrap:wrap}.footer b{color:#526c93}.hint{margin:12px 2px 0;color:#8592aa;font-size:12px;text-align:center}.fallback-note{display:none}.bar-focus:focus{outline:none;filter:drop-shadow(0 0 5px rgba(37,99,235,.35))}@media(max-width:620px){body{padding:12px}.panel{padding:20px 15px}.heading h1{font-size:20px}.kpis{gap:7px;margin-top:18px}.kpi{padding:12px 10px}.kpi .value{font-size:19px}.kpi small{display:block;margin:2px 0 0}.chart-area{height:290px}.toolbar{gap:8px}.seg button{padding:7px 12px}.footer{line-height:1.6}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="topline"><span class="mark" aria-hidden="true">⌚</span><div><div class="eyebrow">智能手表 · 市场营销数据分析</div><strong>用户功能偏好调研</strong></div></header>
+<section class="panel">
+<div class="heading"><div><h1>哪项智能手表功能更受欢迎？</h1><p class="subtitle">按 50 名受访者选择“是”的人数统计，支持人数与占比切换</p></div><span class="chip">样本量 N = 50</span></div>
+<div class="kpis">
+<div class="kpi"><span class="key">最高偏好功能</span><span class="value">64%<small>健康监测</small></span></div>
+<div class="kpi"><span class="key">最低偏好功能</span><span class="value">58%<small>语音助手</small></span></div>
+<div class="kpi"><span class="key">偏好人数最大差距</span><span class="value">3<small>人</small></span></div>
+</div>
+<div class="toolbar"><div class="section-label">四类功能偏好对比</div><div class="seg" role="group" aria-label="图表显示单位"><button id="btnCount" aria-pressed="true">人数</button><button id="btnPercent" aria-pressed="false">占比</button></div></div>
+<div class="chart-area" id="chartArea"><svg id="prefChart" role="img" aria-label="智能手表偏好柱形图：触控操作30人、语音助手29人、健康监测32人、GPS定位31人"></svg><div id="tip" class="tip" role="status"></div></div>
+<div class="insight"><span class="ico">💡</span><p><b>数据洞察：</b>健康监测以 32 人（64%）排名第一，随后是 GPS 定位 31 人（62%）、触控操作 30 人（60%）及语音助手 29 人（58%）。四项均超过半数，最大差距仅 3 人，不能仅凭本样本认定功能偏好存在显著差异。</p></div>
+<div class="footer"><span>数据来源：<b>《用户偏好调查数据.xlsx》</b>（本次实训提供）</span><span>交互：点击或悬停柱形查看详情 · 离线可用</span></div>
+</section><p class="hint">此网页为独立 HTML 文件，双击即可在浏览器打开，无需网站部署。</p>
+</main>
+<script>
+'use strict';
+// 自包含 SVG + JavaScript 交互；不依赖在线 CDN，保证离线可运行。
+const samples=50;
+const records=[
+ {name:'触控操作',count:30,color:'#4E79A7'},
+ {name:'语音助手',count:29,color:'#F28E2B'},
+ {name:'健康监测',count:32,color:'#59A14F'},
+ {name:'GPS 定位',count:31,color:'#E15759'}
+];
+const svg=document.getElementById('prefChart'),area=document.getElementById('chartArea'),tip=document.getElementById('tip');
+const ns='http://www.w3.org/2000/svg';let mode='count';
+const el=(name,attrs={},txt)=>{const n=document.createElementNS(ns,name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,String(v)));if(txt!==undefined)n.textContent=txt;return n};
+function tooltip(r,event){tip.innerHTML=`<b>${r.name}</b><br>${r.count} 人 · 占 ${Math.round(r.count/samples*100)}%`;
+ tip.style.display='block';let left=event&&event.clientX? event.clientX-area.getBoundingClientRect().left+12:area.clientWidth/2;
+ tip.style.left=Math.min(Math.max(12,left),area.clientWidth-150)+'px';tip.style.top='15px';}
+function draw(){let w=Math.max(300,area.clientWidth),h=Math.max(210,area.clientHeight-10);
+ svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.replaceChildren();
+ const max=mode==='count'?50:100,pad={left:53,right:18,top:40,bottom:56},plotW=w-pad.left-pad.right,plotH=h-pad.top-pad.bottom;
+ for(let i=0;i<=5;i++){const v=i*max/5,y=pad.top+plotH-v/max*plotH;
+  svg.append(el('line',{x1:pad.left,x2:w-pad.right,y1:y,y2:y,stroke:'#e4ebf3','stroke-width':'1'}));
+  svg.append(el('text',{x:pad.left-12,y:y+4,fill:'#8190a5','text-anchor':'end','font-size':'12'},v+(mode==='count'?'':'%')));
+ }
+ const barW=Math.min(108,plotW/7),groupW=plotW/4;
+ records.forEach((r,i)=>{const x=pad.left+i*groupW+(groupW-barW)/2,val=mode==='count'?r.count:r.count/samples*100;
+ const bh=val/max*plotH,y=pad.top+plotH-bh,g=el('g',{'class':'bar-focus',tabindex:'0',role:'button','aria-label':`${r.name}：${r.count}人，占${r.count*2}%`});
+ g.append(el('rect',{x,y,width:barW,height:bh,rx:'7',fill:r.color,opacity:'0.93'}));
+ g.append(el('text',{x:x+barW/2,y:y-11,'text-anchor':'middle',fill:'#253851','font-size':'15','font-weight':'700'},mode==='count'?r.count+' 人':r.count*2+'%'));
+ g.append(el('text',{x:x+barW/2,y:pad.top+plotH+25,'text-anchor':'middle',fill:'#506177','font-size':w<480?'12':'13','font-weight':'600'},r.name));
+ g.style.cursor='pointer';g.addEventListener('mouseenter',e=>tooltip(r,e));g.addEventListener('mousemove',e=>tooltip(r,e));g.addEventListener('mouseleave',()=>tip.style.display='none');g.addEventListener('focus',e=>tooltip(r,null));g.addEventListener('blur',()=>tip.style.display='none');g.addEventListener('click',e=>tooltip(r,e));
+ svg.append(g);
+ });}
+function setMode(next){mode=next;document.getElementById('btnCount').setAttribute('aria-pressed',String(next==='count'));document.getElementById('btnPercent').setAttribute('aria-pressed',String(next==='percent'));tip.style.display='none';draw()}
+document.getElementById('btnCount').addEventListener('click',()=>setMode('count'));
+document.getElementById('btnPercent').addEventListener('click',()=>setMode('percent'));
+window.addEventListener('resize',draw);draw();
+</script>
+</body>
+</html>
